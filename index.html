@@ -3,16 +3,489 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="Click Fast!, un jeu de réflexes rapide et coloré.">
     <title>Click Fast!</title>
-
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/app.js" defer></script>
 </head>
+
 <body>
+    <main class="app">
+        <section id="view-home" class="view view--active world" aria-labelledby="home-title">
+            <div class="world__cloud world__cloud--one" aria-hidden="true"></div>
+            <div class="world__cloud world__cloud--two" aria-hidden="true"></div>
+            <div class="world__hill world__hill--left" aria-hidden="true"></div>
+            <div class="world__hill world__hill--middle" aria-hidden="true"></div>
+            <div class="world__hill world__hill--right" aria-hidden="true"></div>
 
-    <h1>Click Fast!</h1>
-    <p>Jeu web de réflexes et de précision.</p>
+            <header class="topbar">
+                <a class="brand" href="#view-home" data-view-target="view-home" aria-label="Click Fast - Accueil">
+                    <span class="brand__tiles" aria-hidden="true">
+                        <span class="tile tile--red">C</span>
+                        <span class="tile tile--yellow">L</span>
+                        <span class="tile tile--green">I</span>
+                        <span class="tile tile--blue">C</span>
+                        <span class="tile tile--red">K</span>
+                    </span>
+                    <span class="brand__fast">FAST!</span>
+                    <small>LE MONDE DES RÉFLEXES</small>
+                </a>
 
-    <script src="js/app.js"></script>
+                <nav class="topbar__nav" aria-label="Navigation principale">
+                    <button class="nav-link nav-link--active" type="button" data-view-target="view-home">Accueil</button>
+                    <button class="nav-link" type="button" data-view-target="view-history">Historique</button>
+                    <span class="coin coin--small" aria-hidden="true">★</span>
+                </nav>
+            </header>
+
+            <div class="home-layout page-content">
+                <div class="home-hero">
+                    <p class="overline overline--light">Prêt pour le</p>
+                    <h1 id="home-title" class="hero-title">
+                        <span>Défi</span>
+                        Click Fast!
+                    </h1>
+                    <p class="hero-copy">Vise la cible, récolte les points et bats ton meilleur score.</p>
+
+                    <div class="button-row">
+                        <button class="game-button game-button--red" type="button" data-view-target="view-config">
+                            Jouer maintenant
+                        </button>
+                        <button class="game-button game-button--blue" type="button" data-view-target="view-history">
+                            Mes parties
+                        </button>
+                    </div>
+
+                    <div class="floating-rewards" aria-hidden="true">
+                        <div class="brick-group">
+                            <span class="brick"></span>
+                            <span class="brick"></span>
+                            <span class="brick"></span>
+                        </div>
+                        <span class="coin">★</span>
+                        <span class="coin">★</span>
+                        <span class="coin">★</span>
+                    </div>
+
+                    <div class="level-progress" aria-label="Progression décorative du niveau">
+                        <span>Niveau 01</span>
+                        <div class="level-progress__track"><span></span></div>
+                    </div>
+                </div>
+
+                <aside class="home-panels">
+                    <article class="paper-card score-preview">
+                        <div class="reward-block" aria-hidden="true">★</div>
+                        <div>
+                            <p class="card-kicker">Meilleur score</p>
+                            <p class="score-preview__number">24 <small>points</small></p>
+                            <p class="card-meta">Précision · Moyen · 10 secondes</p>
+                        </div>
+                    </article>
+
+                    <article class="paper-card rules-card">
+                        <h2>Comment jouer ?</h2>
+                        <ol class="rules-list">
+                            <li>
+                                <span class="step step--red">1</span>
+                                <div><strong>Choisis tes réglages</strong><small>Mode, durée et difficulté.</small></div>
+                            </li>
+                            <li>
+                                <span class="step step--yellow">2</span>
+                                <div><strong>Clique sur la cible</strong><small>Elle change de place à chaque point.</small></div>
+                            </li>
+                            <li>
+                                <span class="step step--green">3</span>
+                                <div><strong>Évite les ratés</strong><small>Ils comptent en mode Précision.</small></div>
+                            </li>
+                        </ol>
+                    </article>
+                </aside>
+            </div>
+
+            <div class="pipe pipe--home" aria-hidden="true"><span></span></div>
+            <div class="ground" aria-hidden="true"></div>
+            <span class="screen-number">Écran 1 / 5</span>
+        </section>
+
+        <!-- ============================================================
+             VUE 2 : CONFIGURATION
+        ============================================================= -->
+        <section id="view-config" class="view world" aria-labelledby="config-title">
+            <div class="world__cloud world__cloud--one" aria-hidden="true"></div>
+            <div class="world__cloud world__cloud--two" aria-hidden="true"></div>
+            <div class="world__hill world__hill--left" aria-hidden="true"></div>
+            <div class="world__hill world__hill--middle" aria-hidden="true"></div>
+            <div class="world__hill world__hill--right" aria-hidden="true"></div>
+
+            <header class="topbar">
+                <a class="brand" href="#view-home" data-view-target="view-home" aria-label="Click Fast - Accueil">
+                    <span class="brand__tiles" aria-hidden="true">
+                        <span class="tile tile--red">C</span><span class="tile tile--yellow">L</span><span class="tile tile--green">I</span><span class="tile tile--blue">C</span><span class="tile tile--red">K</span>
+                    </span>
+                    <span class="brand__fast">FAST!</span>
+                    <small>LE MONDE DES RÉFLEXES</small>
+                </a>
+                <nav class="topbar__nav" aria-label="Navigation principale">
+                    <button class="nav-link" type="button" data-view-target="view-home">Accueil</button>
+                    <button class="nav-link" type="button" data-view-target="view-history">Historique</button>
+                    <span class="coin coin--small" aria-hidden="true">★</span>
+                </nav>
+            </header>
+
+            <div class="config-layout page-content">
+                <aside class="config-intro">
+                    <p class="overline overline--light">Choisis ton</p>
+                    <h1 id="config-title" class="section-title section-title--light">Niveau</h1>
+                    <p>Prépare ta prochaine course contre le chrono.</p>
+
+                    <ol class="config-steps" aria-label="Étapes de configuration">
+                        <li class="config-step config-step--done"><span></span>1 Profil</li>
+                        <li class="config-step config-step--active"><span></span>2 Règles</li>
+                        <li class="config-step"><span></span>3 Départ</li>
+                    </ol>
+                </aside>
+
+                <form id="config-form" class="paper-card config-card" novalidate>
+                    <h2>Paramètres de la partie</h2>
+
+                    <div class="form-field">
+                        <div class="field-heading">
+                            <label for="player-name">Ton pseudo</label>
+                            <small>2–20 caractères</small>
+                        </div>
+                        <input id="player-name" name="pseudo" type="text" placeholder="Exemple : Adnane" minlength="2" maxlength="20" autocomplete="nickname" required>
+                        <p id="pseudo-error" class="form-error" aria-live="polite"></p>
+                    </div>
+
+                    <fieldset class="choice-fieldset">
+                        <legend>Mode de jeu</legend>
+                        <div class="choice-grid choice-grid--two">
+                            <label class="choice-option">
+                                <input type="radio" name="mode" value="classic">
+                                <span class="choice-card">
+                                    <span class="choice-icon choice-icon--blue">C</span>
+                                    <span><strong>Classique</strong><small>Les clics ratés sont ignorés</small></span>
+                                </span>
+                            </label>
+                            <label class="choice-option">
+                                <input type="radio" name="mode" value="precision" checked>
+                                <span class="choice-card choice-card--red">
+                                    <span class="choice-icon choice-icon--red">P</span>
+                                    <span><strong>Précision</strong><small>Chaque clic raté est compté</small></span>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="choice-fieldset">
+                        <legend>Durée</legend>
+                        <div class="choice-grid choice-grid--three">
+                            <label class="choice-option">
+                                <input type="radio" name="duration" value="10" checked>
+                                <span class="choice-card choice-card--red">
+                                    <span class="choice-icon choice-icon--red">10</span>
+                                    <span><strong>10 secondes</strong><small>Course rapide</small></span>
+                                </span>
+                            </label>
+                            <label class="choice-option">
+                                <input type="radio" name="duration" value="20">
+                                <span class="choice-card">
+                                    <span class="choice-icon choice-icon--yellow">20</span>
+                                    <span><strong>20 secondes</strong><small>Course standard</small></span>
+                                </span>
+                            </label>
+                            <label class="choice-option">
+                                <input type="radio" name="duration" value="30">
+                                <span class="choice-card">
+                                    <span class="choice-icon choice-icon--green">30</span>
+                                    <span><strong>30 secondes</strong><small>Course longue</small></span>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="choice-fieldset">
+                        <legend>Difficulté</legend>
+                        <div class="choice-grid choice-grid--three">
+                            <label class="choice-option">
+                                <input type="radio" name="difficulty" value="easy">
+                                <span class="choice-card">
+                                    <span class="choice-icon choice-icon--green">80</span>
+                                    <span><strong>Facile</strong><small>Cible 80 px</small></span>
+                                </span>
+                            </label>
+                            <label class="choice-option">
+                                <input type="radio" name="difficulty" value="medium" checked>
+                                <span class="choice-card choice-card--yellow">
+                                    <span class="choice-icon choice-icon--yellow">60</span>
+                                    <span><strong>Moyenne</strong><small>Cible 60 px</small></span>
+                                </span>
+                            </label>
+                            <label class="choice-option">
+                                <input type="radio" name="difficulty" value="hard">
+                                <span class="choice-card">
+                                    <span class="choice-icon choice-icon--red">40</span>
+                                    <span><strong>Difficile</strong><small>Cible 40 px</small></span>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
+
+                    <p id="config-error" class="form-error" aria-live="polite"></p>
+
+                    <div class="config-footer">
+                        <label class="switch-control">
+                            <input type="checkbox" name="soundEnabled" checked>
+                            <span class="switch" aria-hidden="true"></span>
+                            <span>Effets sonores activés</span>
+                        </label>
+                        <div class="button-row button-row--end">
+                            <button class="game-button game-button--blue" type="button" data-view-target="view-home">Retour</button>
+                            <button class="game-button game-button--red" type="submit">Démarrer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="ground" aria-hidden="true"></div>
+            <span class="screen-number">Écran 2 / 5</span>
+        </section>
+
+        <!-- ============================================================
+             VUE 3 : PARTIE
+        ============================================================= -->
+        <section id="view-game" class="view world game-view" aria-labelledby="game-title">
+            <div class="world__cloud world__cloud--one" aria-hidden="true"></div>
+            <div class="world__cloud world__cloud--two" aria-hidden="true"></div>
+            <div class="world__hill world__hill--left" aria-hidden="true"></div>
+            <div class="world__hill world__hill--middle" aria-hidden="true"></div>
+            <div class="world__hill world__hill--right" aria-hidden="true"></div>
+
+            <header class="topbar topbar--game">
+                <div class="brand" aria-label="Click Fast">
+                    <span class="brand__tiles" aria-hidden="true">
+                        <span class="tile tile--red">C</span><span class="tile tile--yellow">L</span><span class="tile tile--green">I</span><span class="tile tile--blue">C</span><span class="tile tile--red">K</span>
+                    </span>
+                    <span class="brand__fast">FAST!</span>
+                    <small>LE MONDE DES RÉFLEXES</small>
+                </div>
+                <div class="player-summary">
+                    <strong id="game-title">Joueur</strong>
+                    <small id="game-settings-summary">Classique · Moyen · 10 s</small>
+                </div>
+                <button class="game-status" type="button" data-view-target="view-results" title="Afficher la maquette des résultats">En jeu</button>
+                <span class="coin coin--small" aria-hidden="true">★</span>
+            </header>
+
+            <div class="game-layout page-content">
+                <aside class="metric-column">
+                    <article class="dark-card metric-card">
+                        <p>Score</p><strong class="metric-value metric-value--yellow">18</strong><small>cibles touchées</small>
+                    </article>
+                    <article class="dark-card metric-card">
+                        <p>Ratés</p><strong class="metric-value metric-value--red">03</strong><small>clics hors cible</small>
+                    </article>
+                    <article class="dark-card accuracy-card">
+                        <p>Précision</p>
+                        <div class="accuracy-ring"><strong>85,7%</strong></div>
+                        <small>18 / 21 clics</small>
+                    </article>
+                </aside>
+
+                <section class="arena-section" aria-label="Aperçu de l'arène de jeu">
+                    <div class="arena-heading">
+                        <span>Zone de jeu</span>
+                        <span id="target-size-label">Cible · 60 px</span>
+                    </div>
+                    <div class="arena">
+                        <div class="arena-cloud arena-cloud--one" aria-hidden="true"></div>
+                        <div class="arena-cloud arena-cloud--two" aria-hidden="true"></div>
+                        <div class="arena-hill arena-hill--one" aria-hidden="true"></div>
+                        <div class="arena-hill arena-hill--two" aria-hidden="true"></div>
+                        <div class="arena-coins" aria-hidden="true"><span class="coin">★</span><span class="coin">★</span><span class="coin">★</span></div>
+                        <!-- La taille et la position de cette cible sont contrôlées dans app.js. -->
+                        <button class="target" type="button" aria-label="Cible du jeu"><span>★</span></button>
+                        <div class="pipe pipe--arena" aria-hidden="true"><span></span></div>
+                        <div class="arena-bricks" aria-hidden="true"></div>
+                    </div>
+                    <p class="arena-help">Clique sur la cible avant la fin du chrono</p>
+                </section>
+
+                <aside class="metric-column metric-column--right">
+                    <article class="dark-card timer-card">
+                        <p>Temps restant</p>
+                        <strong>03.7</strong>
+                        <div class="timer-track"><span></span></div>
+                    </article>
+                    <article class="dark-card record-card">
+                        <p>Record</p><strong>24</strong><span class="coin coin--small" aria-hidden="true">★</span>
+                    </article>
+                    <article class="dark-card metric-card">
+                        <p>Rythme</p><strong class="metric-value metric-value--cyan">2,86</strong><small>points par seconde</small>
+                    </article>
+                </aside>
+            </div>
+
+            <span class="screen-number">Écran 3 / 5</span>
+        </section>
+
+        <!-- ============================================================
+             VUE 4 : RÉSULTATS
+        ============================================================= -->
+        <section id="view-results" class="view world" aria-labelledby="results-title">
+            <div class="world__cloud world__cloud--one" aria-hidden="true"></div>
+            <div class="world__cloud world__cloud--two" aria-hidden="true"></div>
+            <div class="world__hill world__hill--left" aria-hidden="true"></div>
+            <div class="world__hill world__hill--middle" aria-hidden="true"></div>
+            <div class="world__hill world__hill--right" aria-hidden="true"></div>
+
+            <header class="topbar">
+                <a class="brand" href="#view-home" data-view-target="view-home" aria-label="Click Fast - Accueil">
+                    <span class="brand__tiles" aria-hidden="true">
+                        <span class="tile tile--red">C</span><span class="tile tile--yellow">L</span><span class="tile tile--green">I</span><span class="tile tile--blue">C</span><span class="tile tile--red">K</span>
+                    </span>
+                    <span class="brand__fast">FAST!</span>
+                    <small>LE MONDE DES RÉFLEXES</small>
+                </a>
+                <nav class="topbar__nav" aria-label="Navigation principale">
+                    <button class="nav-link" type="button" data-view-target="view-home">Accueil</button>
+                    <button class="nav-link" type="button" data-view-target="view-history">Historique</button>
+                    <span class="coin coin--small" aria-hidden="true">★</span>
+                </nav>
+            </header>
+
+            <div class="results-content page-content">
+                <div class="results-heading">
+                    <div>
+                        <p class="overline overline--light">Niveau terminé !</p>
+                        <h1 id="results-title" class="results-title">Bravo,<br><span id="results-player-name">Joueur !</span></h1>
+                    </div>
+                    <div class="record-banner"><span>★</span>Nouveau record !</div>
+                </div>
+
+                <div class="results-grid">
+                    <article class="paper-card final-score-card">
+                        <p class="card-kicker">Score final</p>
+                        <div class="final-score"><strong>27</strong><span>points</span><span class="big-star" aria-hidden="true">★</span></div>
+                        <div class="score-progress"><span></span><strong>+3</strong></div>
+                    </article>
+
+                    <div class="result-details">
+                        <div class="result-metrics">
+                            <article class="dark-card metric-card">
+                                <p>Précision</p><strong class="metric-value metric-value--yellow">90,0%</strong><small>27 réussites / 30 clics</small>
+                            </article>
+                            <article class="dark-card metric-card">
+                                <p>Ratés</p><strong class="metric-value metric-value--red">03</strong><small>clics hors cible</small>
+                            </article>
+                        </div>
+                        <article class="paper-card played-config">
+                            <p class="card-kicker">Configuration jouée</p>
+                            <strong>Précision · 10 secondes · Moyen</strong>
+                            <div><span class="mini-badge mini-badge--yellow">60 px</span><span class="mini-badge mini-badge--green">27 pts</span></div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="button-row results-actions">
+                    <button class="game-button game-button--red" type="button" data-view-target="view-game">Rejouer</button>
+                    <button class="game-button game-button--blue" type="button" data-view-target="view-config">Changer les réglages</button>
+                    <button class="game-button game-button--green" type="button" data-view-target="view-home">Accueil</button>
+                </div>
+            </div>
+
+            <div class="pipe pipe--results" aria-hidden="true"><span></span></div>
+            <div class="ground" aria-hidden="true"></div>
+            <span class="screen-number">Écran 4 / 5</span>
+        </section>
+
+        <!-- ============================================================
+             VUE 5 : HISTORIQUE
+        ============================================================= -->
+        <section id="view-history" class="view world" aria-labelledby="history-title">
+            <div class="world__cloud world__cloud--one" aria-hidden="true"></div>
+            <div class="world__cloud world__cloud--two" aria-hidden="true"></div>
+            <div class="world__hill world__hill--left" aria-hidden="true"></div>
+            <div class="world__hill world__hill--middle" aria-hidden="true"></div>
+            <div class="world__hill world__hill--right" aria-hidden="true"></div>
+
+            <header class="topbar">
+                <a class="brand" href="#view-home" data-view-target="view-home" aria-label="Click Fast - Accueil">
+                    <span class="brand__tiles" aria-hidden="true">
+                        <span class="tile tile--red">C</span><span class="tile tile--yellow">L</span><span class="tile tile--green">I</span><span class="tile tile--blue">C</span><span class="tile tile--red">K</span>
+                    </span>
+                    <span class="brand__fast">FAST!</span>
+                    <small>LE MONDE DES RÉFLEXES</small>
+                </a>
+                <nav class="topbar__nav" aria-label="Navigation principale">
+                    <button class="nav-link" type="button" data-view-target="view-home">Accueil</button>
+                    <button class="nav-link nav-link--active" type="button" data-view-target="view-history">Historique</button>
+                    <span class="coin coin--small" aria-hidden="true">★</span>
+                </nav>
+            </header>
+
+            <div class="history-content page-content">
+                <p class="overline overline--light">Tableau des</p>
+                <h1 id="history-title" class="section-title section-title--light">Meilleurs runs</h1>
+                <p class="history-intro">Tes vingt dernières parties sont sauvegardées sur cet appareil.</p>
+
+                <div class="history-toolbar dark-card">
+                    <div class="filter-buttons" role="group" aria-label="Filtrer par mode">
+                        <button class="filter-button filter-button--active" type="button">Tous les modes</button>
+                        <button class="filter-button" type="button">Classique</button>
+                        <button class="filter-button" type="button">Précision</button>
+                    </div>
+                    <label class="sort-control">
+                        <span class="sr-only">Trier l'historique</span>
+                        <select>
+                            <option>Trier : plus récent</option>
+                            <option>Trier : meilleur score</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="history-grid">
+                    <div class="paper-card table-card">
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr><th>#</th><th>Joueur / date</th><th>Mode</th><th>Réglage</th><th>Score</th><th>Précision</th><th>Ratés</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>01</td><td><strong>Adnane</strong><small>08 sept. · 09:41</small></td><td><span class="mode-badge mode-badge--red">Précision</span></td><td>Moyen · 10 s</td><td class="table-score">27</td><td>90,0 %</td><td>3</td></tr>
+                                    <tr><td>02</td><td><strong>Adnane</strong><small>08 sept. · 09:34</small></td><td><span class="mode-badge mode-badge--blue">Classique</span></td><td>Difficile · 20 s</td><td class="table-score">31</td><td class="muted">Non mesuré</td><td class="muted">—</td></tr>
+                                    <tr><td>03</td><td><strong>Adnane</strong><small>08 sept. · 09:29</small></td><td><span class="mode-badge mode-badge--red">Précision</span></td><td>Facile · 10 s</td><td class="table-score">24</td><td>88,9 %</td><td>3</td></tr>
+                                    <tr><td>04</td><td><strong>Adnane</strong><small>08 sept. · 09:18</small></td><td><span class="mode-badge mode-badge--blue">Classique</span></td><td>Moyen · 30 s</td><td class="table-score">54</td><td class="muted">Non mesuré</td><td class="muted">—</td></tr>
+                                    <tr><td>05</td><td><strong>Adnane</strong><small>08 sept. · 09:07</small></td><td><span class="mode-badge mode-badge--red">Précision</span></td><td>Difficile · 20 s</td><td class="table-score">28</td><td>82,4 %</td><td>6</td></tr>
+                                    <tr><td>06</td><td><strong>Adnane</strong><small>08 sept. · 08:52</small></td><td><span class="mode-badge mode-badge--blue">Classique</span></td><td>Facile · 10 s</td><td class="table-score">22</td><td class="muted">Non mesuré</td><td class="muted">—</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <aside class="history-side">
+                        <article class="dark-card history-summary">
+                            <div class="summary-heading"><h2>Aperçu</h2><span class="coin coin--small" aria-hidden="true">★</span></div>
+                            <dl>
+                                <div><dt>Meilleur score</dt><dd>54 pts</dd></div>
+                                <div><dt>Parties jouées</dt><dd>06</dd></div>
+                                <div><dt>Précision moyenne</dt><dd>87,1 %</dd></div>
+                                <div><dt>Mode favori</dt><dd>Précision</dd></div>
+                            </dl>
+                        </article>
+                        <article class="delete-card">
+                            <h2>Effacer l’historique</h2>
+                            <p>Les records et les réglages resteront sauvegardés.</p>
+                            <button type="button">Effacer</button>
+                        </article>
+                    </aside>
+                </div>
+            </div>
+
+            <div class="ground" aria-hidden="true"></div>
+            <span class="screen-number">Écran 5 / 5</span>
+        </section>
+    </main>
 </body>
 </html>
