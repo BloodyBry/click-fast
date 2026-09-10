@@ -7,10 +7,14 @@
     <title>Click Fast!</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/app.js" defer></script>
+    <script src="js/media.js" defer></script>
 </head>
 
 <body>
     <main class="app">
+        <!-- ============================================================
+             VUE 1 : ACCUEIL
+        ============================================================= -->
         <section id="view-home" class="view view--active world" aria-labelledby="home-title">
             <div class="world__cloud world__cloud--one" aria-hidden="true"></div>
             <div class="world__cloud world__cloud--two" aria-hidden="true"></div>
@@ -274,7 +278,8 @@
                     <strong id="game-title">Joueur</strong>
                     <small id="game-settings-summary">Classique · Moyen · 10 s</small>
                 </div>
-                <button class="game-status" type="button" data-view-target="view-results" title="Afficher la maquette des résultats">En jeu</button>
+                <!-- Cet indicateur n'est plus un bouton : seule la fin du chrono ouvre les résultats. -->
+                <span id="game-status" class="game-status" aria-live="polite">En jeu</span>
                 <span class="coin coin--small" aria-hidden="true">★</span>
             </header>
 
@@ -311,7 +316,7 @@
                         <div class="arena-hill arena-hill--two" aria-hidden="true"></div>
                         <div class="arena-coins" aria-hidden="true"><span class="coin">★</span><span class="coin">★</span><span class="coin">★</span></div>
                         <!-- La taille et la position de cette cible sont contrôlées dans app.js. -->
-                        <button class="target" type="button" aria-label="Cible du jeu"><span>★</span></button>
+                        <button class="target" type="button" aria-label="Cible Mario"><span>★</span></button>
                         <div class="pipe pipe--arena" aria-hidden="true"><span></span></div>
                         <div class="arena-bricks" aria-hidden="true"></div>
                     </div>
@@ -321,8 +326,10 @@
                 <aside class="metric-column metric-column--right">
                     <article class="dark-card timer-card">
                         <p>Temps restant</p>
-                        <strong>03.7</strong>
-                        <div class="timer-track"><span></span></div>
+                        <strong id="timer-value">10.0</strong>
+                        <div class="timer-track" aria-hidden="true">
+                            <span id="timer-progress"></span>
+                        </div>
                     </article>
                     <article class="dark-card record-card">
                         <p>Record</p><strong>24</strong><span class="coin coin--small" aria-hidden="true">★</span>
@@ -367,29 +374,42 @@
                         <p class="overline overline--light">Niveau terminé !</p>
                         <h1 id="results-title" class="results-title">Bravo,<br><span id="results-player-name">Joueur !</span></h1>
                     </div>
-                    <div class="record-banner"><span>★</span>Nouveau record !</div>
+                    <!-- Ce bandeau sera affiché uniquement après l'ajout des records. -->
+                    <div id="results-record-banner" class="record-banner" hidden>
+                        <span>★</span>Nouveau record !
+                    </div>
                 </div>
 
                 <div class="results-grid">
                     <article class="paper-card final-score-card">
                         <p class="card-kicker">Score final</p>
-                        <div class="final-score"><strong>27</strong><span>points</span><span class="big-star" aria-hidden="true">★</span></div>
-                        <div class="score-progress"><span></span><strong>+3</strong></div>
+                        <div class="final-score">
+                            <strong id="results-score">0</strong>
+                            <span>points</span>
+                            <span class="big-star" aria-hidden="true">★</span>
+                        </div>
                     </article>
 
                     <div class="result-details">
                         <div class="result-metrics">
                             <article class="dark-card metric-card">
-                                <p>Précision</p><strong class="metric-value metric-value--yellow">90,0%</strong><small>27 réussites / 30 clics</small>
+                                <p>Précision</p>
+                                <strong id="results-accuracy-value" class="metric-value metric-value--yellow">0,0 %</strong>
+                                <small id="results-accuracy-help">0 réussite / 0 clic</small>
                             </article>
                             <article class="dark-card metric-card">
-                                <p>Ratés</p><strong class="metric-value metric-value--red">03</strong><small>clics hors cible</small>
+                                <p>Ratés</p>
+                                <strong id="results-misses-value" class="metric-value metric-value--red">00</strong>
+                                <small id="results-misses-help">clics hors cible</small>
                             </article>
                         </div>
                         <article class="paper-card played-config">
                             <p class="card-kicker">Configuration jouée</p>
-                            <strong>Précision · 10 secondes · Moyen</strong>
-                            <div><span class="mini-badge mini-badge--yellow">60 px</span><span class="mini-badge mini-badge--green">27 pts</span></div>
+                            <strong id="results-config-summary">Précision · 10 secondes · Moyen</strong>
+                            <div>
+                                <span id="results-target-size" class="mini-badge mini-badge--yellow">60 px</span>
+                                <span id="results-score-badge" class="mini-badge mini-badge--green">0 pts</span>
+                            </div>
                         </article>
                     </div>
                 </div>
