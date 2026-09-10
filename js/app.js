@@ -5,6 +5,7 @@ const ALLOWED_MODES = ["classic", "precision"];
 const ALLOWED_DURATIONS = [10, 20, 30];
 const ALLOWED_DIFFICULTIES = ["easy", "medium", "hard"];
 
+
 const TARGET_SIZES = {
     easy: 80,
     medium: 60,
@@ -34,9 +35,17 @@ const gameView = document.getElementById("view-game");
 const arena = document.querySelector(".arena");
 const target = document.querySelector(".target");
 const targetSizeLabel = document.getElementById("target-size-label");
+const scoreValue = document.getElementById("score-value");
+const missesValue = document.getElementById("misses-value");
+const missesHelp = document.getElementById("misses-help");
+const accuracyRing = document.getElementById("accuracy-ring");
+const accuracyValue = document.getElementById("accuracy-value");
+const accuracyHelp = document.getElementById("accuracy-help");
 
 let currentSettings = null;
 let resizeTimeoutId = null;
+let score = 0;
+let misses = 0;
 
 function showView(viewId) {
     const nextView = document.getElementById(viewId);
@@ -65,7 +74,13 @@ document.addEventListener("click", (event) => {
     }
 
     event.preventDefault();
-    showView(navigationControl.dataset.viewTarget);
+
+    const nextViewId = navigationControl.dataset.viewTarget;
+    showView(nextViewId);
+
+    if (nextViewId === "view-game" && currentSettings !== null) {
+        prepareArena(currentSettings);
+    }
 });
 
 function validatePseudo() {
@@ -125,12 +140,9 @@ function updateGameView(settings) {
     resultsPlayerName.textContent = `${settings.pseudo} !`;
 }
 
-
-
 function getRandomInteger(max) {
     return Math.floor(Math.random() * (max + 1));
 }
-
 
 function applyTargetSize(difficulty) {
     const targetSize = TARGET_SIZES[difficulty];
@@ -138,8 +150,6 @@ function applyTargetSize(difficulty) {
     target.style.setProperty("--target-size", `${targetSize}px`);
     targetSizeLabel.textContent = `Cible · ${targetSize} px`;
 }
-
-
 
 function moveTarget() {
     const maximumX = Math.max(0, arena.clientWidth - target.offsetWidth);
@@ -151,9 +161,52 @@ function moveTarget() {
     target.style.top = `${randomY}px`;
 }
 
+function calculateAccuracy() {
+    const totalClicks = score + misses;
 
+    if (totalClicks === 0) {
+        return 0;
+    }
+
+    return (score / totalClicks) * 100;
+}
+
+
+function updateGameStats() {
+    scoreValue.textContent = String(score).padStart(2, "0");
+
+    if (currentSettings.mode === "classic") {
+        missesValue.textContent = "—";
+        missesHelp.textContent = "Non mesuré en Classique";
+        accuracyValue.textContent = "—";
+        accuracyHelp.textContent = "Non mesuré en Classique";
+        accuracyRing.classList.add("accuracy-ring--disabled");
+        accuracyRing.style.setProperty("--accuracy", "0%");
+        return;
+    }
+
+    const totalClicks = score + misses;
+    const accuracy = calculateAccuracy();
+    const formattedAccuracy = accuracy.toFixed(1).replace(".", ",");
+    const hitWord = score === 1 ? "réussite" : "réussites";
+    const clickWord = totalClicks === 1 ? "clic" : "clics";
+
+    missesValue.textContent = String(misses).padStart(2, "0");
+    missesHelp.textContent = "clics hors cible";
+    accuracyValue.textContent = `${formattedAccuracy} %`;
+    accuracyHelp.textContent = `${score} ${hitWord} / ${totalClicks} ${clickWord}`;
+    accuracyRing.classList.remove("accuracy-ring--disabled");
+    accuracyRing.style.setProperty("--accuracy", `${accuracy}%`);
+}
+
+function resetGameStats() {
+    score = 0;
+    misses = 0;
+    updateGameStats();
+}
 
 function prepareArena(settings) {
+    resetGameStats();
     applyTargetSize(settings.difficulty);
     window.requestAnimationFrame(moveTarget);
 }
@@ -185,7 +238,6 @@ configForm.addEventListener("change", () => {
 });
 
 
-
 target.addEventListener("click", (event) => {
     event.stopPropagation();
 
@@ -193,7 +245,19 @@ target.addEventListener("click", (event) => {
         return;
     }
 
+    score += 1;
+    updateGameStats();
     moveTarget();
+});
+
+
+arena.addEventListener("click", () => {
+    if (currentSettings === null || currentSettings.mode !== "precision") {
+        return;
+    }
+
+    misses += 1;
+    updateGameStats();
 });
 
 

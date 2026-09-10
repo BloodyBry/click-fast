@@ -281,15 +281,21 @@
             <div class="game-layout page-content">
                 <aside class="metric-column">
                     <article class="dark-card metric-card">
-                        <p>Score</p><strong class="metric-value metric-value--yellow">18</strong><small>cibles touchées</small>
+                        <p>Score</p>
+                        <strong id="score-value" class="metric-value metric-value--yellow">00</strong>
+                        <small>cibles touchées</small>
                     </article>
                     <article class="dark-card metric-card">
-                        <p>Ratés</p><strong class="metric-value metric-value--red">03</strong><small>clics hors cible</small>
+                        <p>Ratés</p>
+                        <strong id="misses-value" class="metric-value metric-value--red">00</strong>
+                        <small id="misses-help">clics hors cible</small>
                     </article>
                     <article class="dark-card accuracy-card">
                         <p>Précision</p>
-                        <div class="accuracy-ring"><strong>85,7%</strong></div>
-                        <small>18 / 21 clics</small>
+                        <div id="accuracy-ring" class="accuracy-ring">
+                            <strong id="accuracy-value">0,0 %</strong>
+                        </div>
+                        <small id="accuracy-help">0 réussite / 0 clic</small>
                     </article>
                 </aside>
 

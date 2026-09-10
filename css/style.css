@@ -966,13 +966,21 @@ select:focus-visible,
 }
 
 .accuracy-ring {
+    /* app.js actualise cette valeur après chaque clic en mode Précision. */
+    --accuracy: 0%;
+
     width: 140px;
     height: 140px;
     margin: 10px auto;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: conic-gradient(var(--yellow) 0 85.7%, #386780 85.7% 100%);
+    background: conic-gradient(var(--yellow) 0 var(--accuracy), #386780 var(--accuracy) 100%);
+}
+
+/* En mode Classique, la précision n'est volontairement pas mesurée. */
+.accuracy-ring--disabled {
+    background: #386780;
 }
 
 .accuracy-ring::before {
