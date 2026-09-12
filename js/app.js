@@ -21,6 +21,7 @@ const DIFFICULTY_LABELS = {
     medium: "Moyen",
     hard: "Difficile"
 };
+const SETTINGS_STORAGE_KEY = "clickFast.settings";
 
 const views = document.querySelectorAll(".view");
 const gameView = document.getElementById("view-game");
@@ -95,7 +96,7 @@ document.addEventListener("click", (event) => {
     }
 
     event.preventDefault();
-    
+
     const nextViewId = navigationControl.dataset.viewTarget;
     showView(nextViewId);
 
@@ -150,6 +151,13 @@ function readAndValidateSettings() {
         difficulty,
         soundEnabled
     };
+}
+
+function saveSettings(settings) {
+    localStorage.setItem(
+        SETTINGS_STORAGE_KEY,
+        JSON.stringify(settings)
+    );
 }
 
 function updateGameView(settings) {
@@ -357,7 +365,11 @@ configForm.addEventListener("submit", (event) => {
         return;
     }
 
+
     currentSettings = settings;
+
+    saveSettings(settings);
+
     updateGameView(currentSettings);
     showView("view-game");
     prepareArena(currentSettings);
