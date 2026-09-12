@@ -95,7 +95,7 @@ document.addEventListener("click", (event) => {
     }
 
     event.preventDefault();
-
+    
     const nextViewId = navigationControl.dataset.viewTarget;
     showView(nextViewId);
 
